@@ -4,9 +4,19 @@ import React, { useState } from "react";
 
 const Home = () => {
   console.log("welcome home");
-  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  let userInfo = [];
+  userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let loggedinrole = localStorage.getItem("loggedinrole");
   console.log(loggedinrole);
+  userInfo = userInfo.filter((user) => user.role !== "admin" )
+
+const removeUser = (email) => {
+  console.log('removed');
+  let users = userInfo.filter(user => user.email !== email)
+  console.log(users);
+  localStorage.setItem("userInfo", JSON.stringify(users));
+}
+
   return (
     <div>
       <br />
@@ -32,6 +42,9 @@ const Home = () => {
           <div className="p-2 flex-fill bd-highlight">
             <h6>userId</h6>
           </div>
+          <div className="p-2 flex-fill bd-highlight">
+            <h6>Remove</h6>
+          </div>
         </div>
 
         {userInfo.map((item) => (
@@ -43,6 +56,7 @@ const Home = () => {
             <div className="p-2 flex-fill bd-highlight">{item.email}</div>
             <div className="p-2 flex-fill bd-highlight">{item.password}</div>
             <div className="p-2 flex-fill bd-highlight">{item.id}</div>
+            <div className="p-2 flex-fill bd-highlight"><a href="# " style={{ textDecoration: "none" }} onClick={() => removeUser(item.email)}>Remove</a></div>
           </div>
         ))}
       </>}

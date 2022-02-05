@@ -28,16 +28,18 @@ const SignUp = (props) => {
       let dataItems = [];
       let dataDummyItems = JSON.parse(localStorage.getItem("userInfo"));
       console.log(dataDummyItems);
+      let userInfo = dataItems.length > 0 ? dataItems : dataDummyItems
+      console.log(userInfo);
+      let userIndex = (dataDummyItems || []).findIndex(user => user.email === formValues.email)
+      if (userIndex >= 0) {
+        alert("Email already registered Plz signup with new one")
+        return
+      }
       dataDummyItems
         ? dataDummyItems.push(formValues)
         : dataItems.push(formValues);
 
-      localStorage.setItem(
-        "userInfo",
-        dataItems.length > 0
-          ? JSON.stringify(dataItems)
-          : JSON.stringify(dataDummyItems)
-      );
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
       console.log(dataItems, dataDummyItems);
       setIsSubmit(true);
       setFormValues(initialValue);
@@ -118,11 +120,11 @@ const SignUp = (props) => {
         <div className="mb-3">
           <label htmlFor="role" className="form-label" required>
             Role
-          
-          <select name="role" value={formValues.role} onChange={handleChange}>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-          </select>
+
+            <select name="role" value={formValues.role} onChange={handleChange}>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
           </label>
         </div>
         {/* <input type="text" className="Phone Number" pattern="[7-9]{1}[0-9]{9}" 
